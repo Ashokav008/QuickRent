@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment</title>
+    <style>
+        form {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: flex;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .innerHtml {
+            padding-top: 10px;
+            margin-top: 100px;
+            /* border: 2px solid green; */
+            /* font-weight: bold; */
+
+        }
+
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #payment-status {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form">
+        <div id="order-summary">
+            <h2>Order Summary</h2>
+            <div>
+                <label>Product name:</label>
+                <span id="product-name" class="innerHtml"></span>
+            </div>
+            <div>
+                <label>Price:</label>
+                <span id="price" class="innerHtml"></span>
+            </div>
+            <div>
+                <label>Order ID:</label>
+                <span id="order-id" class="innerHtml"></span>
+            </div>
+            <div>
+                <label>Date:</label>
+                <span id="date" class="innerHtml"></span>
+            </div>
+            <br>
+            <!-- <button type="button" id="back-button">Go back</button> -->
+            <button type="button" id="next-button">Next</button>
+
+        </div>
+        <div id="customer-details" style="display:none;">
+            <h2>Customer Details</h2>
+            <div>
+                <label>Name:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div>
+                <label>Number:</label>
+                <input type="tel" id="number" required>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div>
+                <label>Address:</label>
+                <input type="text" id="address" required>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="accept-terms" required>
+                    I accept the terms and conditions for rental
+                </label>
+            </div>
+            <br>
+            <button type="button" id="back-button">Back</button>
+            <button type="button" id="next-button-2">Next</button>
+        </div>
+        <div id="payment" style="display:none;">
+            <h2>Payment</h2>
+            <div>
+                <label>
+                    <input type="radio" name="payment-method" value="online" required>
+                    Online Payment
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="cod">
+                    Cash on Delivery
+                </label>
+            </div>
+            <br>
+            <button type="button" id="back-button-2">Back</button>
+            <button type="button" id="submit-button">Proceed to payment</button>
+            <span id="payment-status"></span>
+        </div>
+    </form>
+    <script>
+        // form elements
+        const form = document.querySelector("#form");
+        const orderSummary = document.querySelector("#order-summary");
+        const customerDetails = document.querySelector("#customer-details");
+        const payment = document.querySelector("#payment");
+        const nextButton = document.querySelector("#next-button");
+        const nextButton2 = document.querySelector("#next-button-2");
+        const submitButton = document.querySelector("#submit-button");
+        const paymentStatus = document.querySelector("#payment-status");
+        const acceptTerms = document.querySelector("#accept-terms");
+        const productName = document.querySelector("#product-name");
+        const price = document.querySelector("#price");
+        const orderId = document.querySelector("#order-id");
+        const date = document.querySelector("#date");
+        const name = document.querySelector("#name");
+        const number = document.querySelector("#number");
+        const email = document.querySelector("#email");
+        const address = document.querySelector("#address");
+        const backButton = document.querySelector("#back-button")
+        const backButton2 = document.querySelector("#back-button-2")
+        // set default values
+        productName.innerHTML = "Wired Gaming Mouse, 4000 DPI, Lightweight";
+        price.innerHTML = "₹579.";
+        orderId.innerHTML = "as23kadnldksmd";
+        date.innerHTML = "16-01-2023";
+
+        // handle next button
+        nextButton.addEventListener("click", () => {
+            orderSummary.style.display = "none";
+            customerDetails.style.display = "block";
+        });
+
+        nextButton2.addEventListener("click", () => {
+            customerDetails.style.display = "none";
+            payment.style.display = "block";
+        });
+        backButton.addEventListener("click", () => {
+            console.log('Clicked in the vack btin');
+            customerDetails.style.display = "none";
+            orderSummary.style.display = "block";
+        });
+        backButton2.addEventListener("click", () => {
+            customerDetails.style.display = "block";
+            payment.style.display = "none";
+        });
+
+        // handle form submission
+        submitButton.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // check if terms and conditions are accepted
+            if (!acceptTerms.checked) {
+                paymentStatus.innerHTML = "Please accept the terms and conditions for rental.";
+                return;
+            }
+
+            // get selected payment method
+            const paymentMethod = form.elements["payment-method"].value;
+
+            // perform dummy payment process
+            if (paymentMethod === "online") {
+                // simulate online payment success/failure
+                const success = Math.random() >= 0.5;
+                if (success) {
+                    paymentStatus.innerHTML = "Payment successful!";
+                } else {
+                    paymentStatus.innerHTML = "Payment failed. Please try again.";
+                }
+            } else if (paymentMethod === "cod") {
+                paymentStatus.innerHTML = "Pay the cash at the time of delievery"
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>
